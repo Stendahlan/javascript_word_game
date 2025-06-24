@@ -41,25 +41,25 @@ export const useGridInteraction = (gridSize = 16) => {
             console.log(lastHighlightedIndex)
             // check to see if hovered square already in the current highlighted path
             if (highlightedSquares.has(index)) {
-                console.log("hovered already in path");
+                // console.log("hovered already in path");
                 return;
             }
 
             // check to see if there is a highlighted square
             if (lastHighlightedIndex === null) {
-                console.log("first square");
+                // console.log("first square");
                 return;
             }
 
             // checking to see if the hovered square is adjacent or diagonal to last highlighted square
             if (isAdjacent(lastHighlightedIndex, index, Math.sqrt(gridSize))) {
-                console.log("it IS adjacent");
+                // console.log("it IS adjacent");
                 // add the new square to the path
                 setHighlightedSquares(prev => new Set(prev.add(index)));
 
                 setLastHighlightedIndex(index);
             } else {
-                console.log("it IS NOT adjacent");
+                // console.log("it IS NOT adjacent");
             }
         }
     };

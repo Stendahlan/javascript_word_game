@@ -26,15 +26,17 @@ function App() {
                 {/* 4X4 Grid component */}
                 <GameGrid letters={letters} />
                 
-                {/* Start button */}
-                <div className="flex justify-center">
-                    <button 
-                        onClick={handleStart}
-                        className="px-16 py-6 bg-black text-white font-semibold hover:bg-blue-700 transition-colors"
-                    >
-                        {gameStarted ? 'New Game' : 'Play'}
-                    </button>
-                </div>
+                {/* Start button - only show when game hasn't started */}
+                {!gameStarted && (
+                    <div className="flex justify-center">
+                        <button 
+                            onClick={handleStart}
+                            className="px-16 py-6 bg-black text-white font-semibold hover:bg-blue-700 transition-colors"
+                        >
+                            Play
+                        </button>
+                    </div>
+                )}
             </div>
         </div>
     )
