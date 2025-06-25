@@ -15,7 +15,7 @@ const isAdjacent = (index1, index2, gridSize = 4) => {
 
     // Adjacency/Diagonality means row and col differences are 0 or 1
     // (but not both 0, which would mean it's the same square)
-    return (rowDiff == 1 && colDiff == 1) || (rowDiff == 0 && colDiff == 1) || (rowDiff == 1 && colDiff == 0);
+    return (rowDiff <= 1 && colDiff <= 1)
 };
 
 export const useGridInteraction = (gridSize = 16) => {
@@ -25,6 +25,8 @@ export const useGridInteraction = (gridSize = 16) => {
     const [isDragging, setIsDragging] = useState(false);
     // tracking last highligthed square
     const [lastHighlightedIndex, setLastHighlightedIndex] = useState(null);
+    // tracking current word being made
+    const [currWord, setCurrWord] = useState([]);
     
     // when mouse is clicked
     const handleMouseDown = (index) => {
@@ -33,6 +35,8 @@ export const useGridInteraction = (gridSize = 16) => {
         setHighlightedSquares(new Set([index]));
 
         setLastHighlightedIndex(index);
+
+        setCurrWord([index]);
     };
     // when mouse is clicked on a square
     const handleMouseEnter = (index) => {
@@ -58,6 +62,8 @@ export const useGridInteraction = (gridSize = 16) => {
                 setHighlightedSquares(prev => new Set(prev.add(index)));
 
                 setLastHighlightedIndex(index);
+
+                setCurrWord(prev => [...prev, index]);
             } else {
                 // console.log("it IS NOT adjacent");
             }
@@ -68,6 +74,8 @@ export const useGridInteraction = (gridSize = 16) => {
         setIsDragging(false);
         setHighlightedSquares(new Set());
         setLastHighlightedIndex(null);
+        // set current word
+        setCurrWord([]);
     };
     // comonent mounts
     useEffect(() => {
@@ -80,6 +88,7 @@ export const useGridInteraction = (gridSize = 16) => {
     return {
         highlightedSquares,
         isDragging,
+        currWord,
         handleMouseDown,
         handleMouseEnter
     };

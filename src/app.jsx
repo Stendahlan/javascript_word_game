@@ -1,8 +1,10 @@
 import { useGameState } from "./useGameState";
 import GameGrid from "./components/GameGrid";
+import { useState } from "react";
     
 function App() {
     const { letters, gameStarted, handleStart } = useGameState();
+    const [currentWord, setCurrentWord] = useState('');
 
     return (
         <div className="min-h-screen bg-gray-100 relative overflow-hidden">
@@ -24,7 +26,24 @@ function App() {
                 </div>
                 
                 {/* 4X4 Grid component */}
-                <GameGrid letters={letters} />
+                <GameGrid 
+                    letters={letters}
+                    gameStarted={gameStarted} 
+                    onWordChange={setCurrentWord} 
+                />
+
+                {/* Word display field - only show when game has started */}
+                {gameStarted && (
+                    <div className="mb-4">
+                        <input
+                            type="text"
+                            value={currentWord}
+                            readOnly
+                            className="px-4 py-2 text-xl font-semibold text-center border-0 rounded bg-transparent w-96 focus:outline-none"
+                            placeholder="Drag mouse over letters to form words..."
+                        />
+                    </div>
+                )}
                 
                 {/* Start button - only show when game hasn't started */}
                 {!gameStarted && (

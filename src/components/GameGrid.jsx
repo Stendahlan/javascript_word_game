@@ -1,9 +1,17 @@
 import React from 'react';
 import { useGridInteraction } from './useGridInteraction';
 
-function GameGrid({ letters }) {
+function GameGrid({ letters, gameStarted, onWordChange }) {
     
-    const { highlightedSquares, handleMouseDown, handleMouseEnter } = useGridInteraction();
+    const { highlightedSquares, currWord, handleMouseDown, handleMouseEnter } = useGridInteraction();
+
+    const currentWord = currWord.map(index => letters[index]).join('');
+
+    React.useEffect(() => {
+        if (onWordChange) {
+            onWordChange(currentWord);
+        }
+    }, [currentWord, onWordChange]);
 
     return (
         <div className="grid grid-cols-4 gap-16 mb-8">
