@@ -3,7 +3,15 @@ import GameGrid from "./components/GameGrid";
 import { useState } from "react";
     
 function App() {
-    const { letters, gameStarted, gameEnded, formattedTime, handleStart, backToMain } = useGameState();
+    const { 
+        letters, 
+        gameStarted, 
+        gameEnded, 
+        formattedTime, 
+        handleStart, 
+        backToMain 
+    } = useGameState();
+
     const [currentWord, setCurrentWord] = useState('');
 
     return (
@@ -69,7 +77,7 @@ function App() {
                                     onClick={handleStart}
                                     className="px-16 py-6 bg-black text-white font-semibold hover:bg-blue-700 transition-colors"
                                 >
-                                    Play
+                                    Start
                                 </button>
                             </div>
                         )}

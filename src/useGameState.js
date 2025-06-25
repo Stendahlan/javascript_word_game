@@ -4,18 +4,17 @@ import { generateLettersGrid } from './logic';
 export const useGameState = () => {
     const [letters, setLetters] = useState(Array(16).fill(''));
     const [gameStarted, setGameStarted] = useState(false);
-    const [timeLeft, setTimeLeft] = useState(30);
+    const [timeLeft, setTimeLeft] = useState(10);
     const [gameEnded, setGameEnded] = useState(false);
     const timerRef = useRef(null);
 
     const handleStart = () => {
-        const newLetters = generateLettersGrid();
-        setLetters(newLetters);
+        setLetters(generateLettersGrid());
         setGameStarted(true);
         setGameEnded(false);
-        setTimeLeft(30);
+        setTimeLeft(10);
         
-        // Start the countdown timer
+        // start countdown timer
         timerRef.current = setInterval(() => {
             setTimeLeft(prev => {
                 if (prev <= 1) {
@@ -47,6 +46,8 @@ export const useGameState = () => {
     const backToMain = () => {
         setGameEnded(false);
         setGameStarted(false);
+        setLetters(Array(16).fill(''));  // This clears all letters
+        setTimeLeft(10);  // Also reset the timer
     };
 
     return {
