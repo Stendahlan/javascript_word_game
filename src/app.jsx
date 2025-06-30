@@ -1,5 +1,5 @@
 import { useGameState } from "./useGameState";
-import GameGrid from "./components/GameGrid";
+import GameGrid from "./GameGrid";
 import { useState } from "react";
     
 function App() {
@@ -13,6 +13,17 @@ function App() {
     } = useGameState();
 
     const [currentWord, setCurrentWord] = useState('');
+    const [isWordValid, setIsWordValid] = useState(null);
+
+    const handleWordChange = (word, isValid) => {
+        setCurrentWord(word);
+        setIsWordValid(isValid);
+    };
+
+    const getTextColor = () => {
+        if (currentWord.length === 0) return 'text-gray-800'; // Empty
+        return isWordValid ? 'text-green-600' : 'text-red-600'; // Valid or invalid
+    };
 
     return (
         <div className="min-h-screen bg-gray-100 relative overflow-hidden">
@@ -54,7 +65,7 @@ function App() {
                         {/* 4X4 Grid component */}
                         <GameGrid 
                             letters={letters} 
-                            onWordChange={setCurrentWord}
+                            onWordChange={handleWordChange}
                         />
                         
                         {/* Word display field - only show when game has started */}
@@ -64,7 +75,7 @@ function App() {
                                     type="text"
                                     value={currentWord}
                                     readOnly
-                                    className="px-4 py-2 text-xl font-semibold text-center border-0 rounded bg-transparent w-96 focus:outline-none"
+                                    className={`px-4 py-2 text-xl font-semibold text-center border-0 rounded bg-transparent w-96 focus:outline-none transition-colors duration-200 ${getTextColor()}`}
                                     placeholder="Drag to form words..."
                                 />
                             </div>

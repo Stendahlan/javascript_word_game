@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 // helper function to determine if it's adjacent
 const isAdjacent = (index1, index2, gridSize = 4) => {
@@ -18,7 +18,7 @@ const isAdjacent = (index1, index2, gridSize = 4) => {
     return (rowDiff <= 1 && colDiff <= 1)
 };
 
-export const useGridInteraction = (gridSize = 16) => {
+export const useGridInteraction = (gridSize = 16, onWordComplete) => {
     // storing indices of currently highlighted squares
     const [highlightedSquares, setHighlightedSquares] = useState(new Set());
     // tracking whether mouse is down (for dragging)
@@ -70,13 +70,23 @@ export const useGridInteraction = (gridSize = 16) => {
         }
     };
     // when mouse button is released anywhere
-    const handleMouseUp = () => {
+    const handleMouseUp = useCallback(() => {
+        if (isDragging && currWord.length > 0) {
+            // Store the completed word before clearing
+            setPreviousWord([...currWord]);
+            
+            // Call the completion callback if provided
+            if (onWordComplete) {
+                onWordComplete([...currWord]);
+            }
+        }
+        
         setIsDragging(false);
         setHighlightedSquares(new Set());
         setLastHighlightedIndex(null);
-        // set current word
         setCurrWord([]);
-    };
+    }, [isDragging, currWord, onWordComplete]);
+
     // comonent mounts
     useEffect(() => {
         document.addEventListener('mouseup', handleMouseUp);

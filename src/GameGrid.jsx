@@ -1,17 +1,29 @@
 import React from 'react';
 import { useGridInteraction } from './useGridInteraction';
+import { useDictionary } from './useDictionary';
 
 function GameGrid({ letters, gameStarted, onWordChange }) {
     
-    const { highlightedSquares, currWord, handleMouseDown, handleMouseEnter } = useGridInteraction();
-
+    const { isValidWord, isLoading, error } = useDictionary();
+    
+    const handleWordComplete = (wordIndices) => {
+        const word = wordIndices.map(index => letters[index]).join('');
+        const isValid = word.length > 1 && isValidWord(word);
+        
+        if (onWordChange) {
+            onWordChange(word, isValid);
+        }
+    };
+    
+    const { highlightedSquares, currWord, handleMouseDown, handleMouseEnter } = useGridInteraction(16, handleWordComplete);
     const currentWord = currWord.map(index => letters[index]).join('');
+    const isCurrentWordValid = currentWord.length > 1 && isValidWord(currentWord);
 
     React.useEffect(() => {
         if (onWordChange) {
-            onWordChange(currentWord);
+            onWordChange(currentWord, isCurrentWordValid);
         }
-    }, [currentWord, onWordChange]);
+    }, [currentWord, isCurrentWordValid, onWordChange]);
 
     return (
         <div className="grid grid-cols-4 gap-16 mb-8">
