@@ -1,6 +1,7 @@
 import React from 'react';
 import { useGridInteraction } from './useGridInteraction';
 import { useDictionary } from './useDictionary';
+import { getLetterScore } from './logic';
 
 function GameGrid({ letters, gameStarted, onWordChange }) {
     
@@ -31,13 +32,20 @@ function GameGrid({ letters, gameStarted, onWordChange }) {
                 <div
                     key={i}
                     className={`
-                        w-24 h-24 border border-gray-300 flex items-center justify-center
+                        w-24 h-24 border border-gray-300 flex items-center justify-center relative
                         ${highlightedSquares.has(i) ? 'bg-blue-500' : 'bg-black'}
                         transition-colors duration-100 ease-in-out cursor-pointer
                     `}
                     onMouseDown={() => handleMouseDown(i)}
                     onMouseEnter={() => handleMouseEnter(i)}
                 >
+                    {/* Letter score in upper left corner */}
+                    {gameStarted && (
+                        <span className="absolute top-1 left-1 text-white text-xs font-bold">
+                            {getLetterScore(letter)}
+                        </span>
+                    )}
+                    {/* Main letter */}
                     <span className="text-white text-2xl font-bold select-none">
                         {letter}
                     </span>

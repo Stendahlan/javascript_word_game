@@ -64,7 +64,8 @@ function App() {
                         
                         {/* 4X4 Grid component */}
                         <GameGrid 
-                            letters={letters} 
+                            letters={letters}
+                            gameStarted={gameStarted}
                             onWordChange={handleWordChange}
                         />
                         

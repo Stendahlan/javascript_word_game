@@ -72,9 +72,6 @@ export const useGridInteraction = (gridSize = 16, onWordComplete) => {
     // when mouse button is released anywhere
     const handleMouseUp = useCallback(() => {
         if (isDragging && currWord.length > 0) {
-            // Store the completed word before clearing
-            setPreviousWord([...currWord]);
-            
             // Call the completion callback if provided
             if (onWordComplete) {
                 onWordComplete([...currWord]);
@@ -93,7 +90,7 @@ export const useGridInteraction = (gridSize = 16, onWordComplete) => {
         return () => {
             document.removeEventListener('mouseup', handleMouseUp);
         };
-    }, []);
+    }, [handleMouseUp]);
 
     return {
         highlightedSquares,
