@@ -15,3 +15,7 @@ export const getLetterScore = (letter) => {
     };
     return scores[letter.toUpperCase()] || 0;
 };
+
+export const calculateWordScore = (word) => {
+    return word.split('').reduce((total, letter) => total + getLetterScore(letter), 0);
+};

@@ -1,9 +1,9 @@
 import React from 'react';
 import { useGridInteraction } from './useGridInteraction';
 import { useDictionary } from './useDictionary';
-import { getLetterScore } from './logic';
+import { getLetterScore, calculateWordScore } from './logic';
 
-function GameGrid({ letters, gameStarted, onWordChange }) {
+function GameGrid({ letters, gameStarted, onWordChange, onWordComplete }) {
     
     const { isValidWord, isLoading, error } = useDictionary();
     
@@ -13,6 +13,12 @@ function GameGrid({ letters, gameStarted, onWordChange }) {
         
         if (onWordChange) {
             onWordChange(word, isValid);
+        }
+        
+        // If word is valid, calculate score and notify parent
+        if (isValid && onWordComplete) {
+            const wordScore = calculateWordScore(word);
+            onWordComplete(word, wordScore);
         }
     };
     

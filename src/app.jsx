@@ -14,10 +14,27 @@ function App() {
 
     const [currentWord, setCurrentWord] = useState('');
     const [isWordValid, setIsWordValid] = useState(null);
+    const [score, setScore] = useState(0);
+    const [foundWords, setFoundWords] = useState(new Set());
 
     const handleWordChange = (word, isValid) => {
         setCurrentWord(word);
         setIsWordValid(isValid);
+    };
+
+    const handleWordComplete = (word, wordScore) => {
+        if (word.length > 1 && !foundWords.has(word.toLowerCase())) {
+            setScore(prevScore => prevScore + wordScore);
+            setFoundWords(prev => new Set(prev.add(word.toLowerCase())));
+        }
+    };
+
+    const resetGame = () => {
+        setScore(0);
+        setFoundWords(new Set());
+        setCurrentWord('');
+        setIsWordValid(null);
+        backToMain();
     };
 
     const getTextColor = () => {
@@ -41,7 +58,7 @@ function App() {
                             Game Over
                         </div>
                         <button 
-                            onClick={backToMain}
+                            onClick={resetGame}
                             className="px-16 py-6 bg-black text-white font-semibold hover:bg-blue-700 transition-colors"
                         >
                             Play Again
@@ -55,7 +72,7 @@ function App() {
                         {/* Score and Time above the grid */}
                         <div className="flex justify-between w-full max-w-xs mb-4">
                             <div className="text-lg font-semibold text-gray-800">
-                                Score: 0
+                                Score: {score}
                             </div>
                             <div className="text-lg font-semibold text-gray-800">
                                 Time: {formattedTime}
@@ -64,9 +81,10 @@ function App() {
                         
                         {/* 4X4 Grid component */}
                         <GameGrid 
-                            letters={letters}
+                            letters={letters} 
                             gameStarted={gameStarted}
                             onWordChange={handleWordChange}
+                            onWordComplete={handleWordComplete}
                         />
                         
                         {/* Word display field - only show when game has started */}
